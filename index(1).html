@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f98db1">
+<title>경호에게 온 데이트 초대장 💌</title>
+<style>
+:root{
+  --pink:#ff8eb5; --pink2:#ff6f9f; --rose:#ea568a;
+  --cream:#fffaf3; --lav:#eee6ff; --ink:#513943;
+  --glass:rgba(255,255,255,.78); --line:rgba(255,255,255,.9);
+  --shadow:0 24px 70px rgba(176,72,114,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 12% 10%,#ffdce9 0 13%,transparent 14%),
+    radial-gradient(circle at 88% 8%,#ece2ff 0 12%,transparent 13%),
+    radial-gradient(circle at 20% 90%,#fff0c8 0 10%,transparent 11%),
+    linear-gradient(145deg,#fff9fb,#fffaf1 52%,#f6efff);
+  overflow-x:hidden;
+}
+button{font:inherit}
+.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.petal{position:absolute;top:-10vh;animation:fall linear infinite;opacity:.62;filter:drop-shadow(0 4px 4px rgba(198,80,125,.12))}
+@keyframes fall{to{transform:translate3d(var(--drift),115vh,0) rotate(540deg)}}
+.app{position:relative;z-index:2;width:min(820px,94vw);margin:auto;padding:24px 0 50px}
+.screen{display:none;min-height:calc(100vh - 74px);align-items:center;justify-content:center;animation:fade .45s ease}
+.screen.active{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.glass{
+  width:100%;padding:clamp(23px,5vw,48px);border-radius:34px;
+  background:var(--glass);border:2px solid var(--line);box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);text-align:center;
+}
+.badge{display:inline-flex;gap:8px;align-items:center;padding:9px 15px;border-radius:999px;background:#fff0f5;color:#d74d7b;font-weight:800}
+h1{font-size:clamp(34px,7vw,58px);line-height:1.08;margin:15px 0 12px}
+h2{font-size:clamp(27px,5vw,42px);margin:10px 0}
+.lead{font-size:17px;line-height:1.65;color:#79616b;margin:0 auto 22px}
+.btns{display:flex;justify-content:center;gap:13px;flex-wrap:wrap;min-height:74px;align-items:center}
+.btn{
+  border:0;border-radius:19px;padding:15px 24px;cursor:pointer;font-weight:900;font-size:17px;
+  transition:.22s transform,.22s opacity,.22s box-shadow,.22s filter;
+  -webkit-tap-highlight-color:transparent
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(.97)}
+.primary{color:white;background:linear-gradient(135deg,var(--pink),var(--pink2));box-shadow:0 12px 25px rgba(238,86,138,.28)}
+.muted{background:#eee7eb;color:#735b66}
+.next{margin-top:24px;min-width:150px}
+.note{min-height:24px;margin-top:14px;color:#d14b78;font-weight:800}
+.step{font-size:13px;font-weight:900;letter-spacing:.16em;color:#cf5b82;margin-bottom:8px}
+
+/* envelope */
+.envelope-wrap{perspective:1200px}
+.envelope{
+  position:relative;width:min(420px,80vw);height:260px;margin:20px auto 32px;
+  filter:drop-shadow(0 20px 28px rgba(182,73,113,.2));cursor:pointer;transform-style:preserve-3d;
+}
+.env-body{position:absolute;inset:55px 0 0;background:linear-gradient(145deg,#ffb2ca,#ff8eb4);border-radius:18px;overflow:hidden}
+.env-body:before,.env-body:after{content:"";position:absolute;bottom:-8px;width:65%;height:120%;background:#ffa0bd}
+.env-body:before{left:-16%;transform:rotate(34deg)}
+.env-body:after{right:-16%;transform:rotate(-34deg)}
+.flap{
+  position:absolute;top:55px;left:0;width:100%;height:145px;transform-origin:top center;
+  background:linear-gradient(145deg,#ffc0d3,#ff9cbb);clip-path:polygon(0 0,100% 0,50% 100%);
+  z-index:4;transition:transform .9s cubic-bezier(.2,.8,.2,1)
+}
+.letter{
+  position:absolute;left:8%;right:8%;bottom:10px;height:185px;background:#fffdf9;border-radius:18px;
+  z-index:2;padding:38px 20px 20px;transition:transform 1s cubic-bezier(.2,.8,.2,1),z-index .2s;
+  font-weight:900;color:#d95783;font-size:25px
+}
+.seal{
+  position:absolute;left:50%;top:142px;transform:translate(-50%,-50%);z-index:6;
+  width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#ef5f8e;color:white;font-size:28px;
+  box-shadow:inset 0 0 0 6px rgba(255,255,255,.23),0 8px 18px rgba(164,53,93,.22)
+}
+.envelope.open .flap{transform:rotateX(180deg);z-index:1}
+.envelope.open .letter{transform:translateY(-115px);z-index:5}
+.tap{font-weight:800;color:#927481}
+
+/* choice cards */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px;text-align:left}
+.choice{
+  border:2px solid #f2dce5;background:white;border-radius:23px;padding:17px;
+  display:flex;gap:13px;align-items:center;cursor:pointer;transition:.22s;box-shadow:0 8px 20px rgba(136,77,99,.07)
+}
+.choice:hover{transform:translateY(-3px)}
+.choice.selected{border-color:var(--pink);background:#fff0f6;box-shadow:0 12px 24px rgba(231,91,140,.16)}
+.choice .ico{font-size:34px}
+.choice strong{display:block;font-size:17px}
+.choice small{color:#90737e}
+
+.tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0 14px}
+.tab{border:0;border-radius:999px;padding:11px 17px;background:#f1eaee;color:#745b65;font-weight:900;cursor:pointer}
+.tab.active{background:#ff8eb5;color:white}
+.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.menu{
+  border:2px solid #f0e1e8;background:white;border-radius:18px;padding:14px;cursor:pointer;font-weight:800;transition:.2s
+}
+.menu.selected{border-color:#ff7ba8;background:#fff0f5;color:#d84d7c;transform:scale(1.015)}
+
+/* progress */
+.progress-wrap{margin:22px auto 0;max-width:430px}
+.progress-label{display:flex;justify-content:space-between;font-size:13px;font-weight:900;color:#a06e80}
+.track{height:13px;background:#f0e6eb;border-radius:999px;overflow:hidden;margin-top:7px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#ff9fbe,#ff5f95);border-radius:inherit;transition:width .65s cubic-bezier(.2,.8,.2,1)}
+
+/* ticket */
+.ticket{
+  position:relative;background:#fffdfa;border-radius:28px;padding:25px;margin:24px auto;text-align:left;
+  border:2px dashed #efa9c0;box-shadow:0 16px 35px rgba(157,75,104,.12)
+}
+.ticket:before,.ticket:after{content:"";position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:#f7eef7;transform:translateY(-50%)}
+.ticket:before{left:-14px}.ticket:after{right:-14px}
+.ticket-head{text-align:center;border-bottom:1px dashed #ecc6d3;padding-bottom:15px;margin-bottom:12px}
+.ticket-title{font-size:12px;letter-spacing:.25em;font-weight:900;color:#d45480}
+.ticket-name{font-size:29px;font-weight:1000;margin-top:5px}
+.row{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #f3e2e8}
+.row:last-child{border:0}
+.label{min-width:70px;color:#d0537e;font-weight:900}
+.celebrate{font-size:46px;letter-spacing:8px}
+.soft{font-size:13px;color:#9b828c;margin-top:15px}
+.music{
+  position:fixed;z-index:9;right:18px;top:18px;width:48px;height:48px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.82);box-shadow:0 8px 20px rgba(145,69,99,.15);font-size:20px;cursor:pointer
+}
+.toast{
+  position:fixed;left:50%;bottom:28px;z-index:20;transform:translateX(-50%) translateY(20px);
+  background:#503943;color:white;padding:12px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:570px){
+  .grid,.menu-grid{grid-template-columns:1fr}
+  .glass{border-radius:27px;padding:24px 17px}
+  .envelope{height:235px}.env-body{top:50px}.flap{top:50px}.seal{top:131px}
+}
+</style>
+</head>
+<body>
+<button class="music" id="musicBtn" aria-label="배경음 켜기">🔇</button>
+<div class="bg" id="bg"></div>
+<div class="toast" id="toast"></div>
+
+<main class="app">
+<section class="screen active" id="cover">
+  <div class="glass">
+    <div class="envelope-wrap">
+      <div class="envelope" id="envelope" onclick="openEnvelope()">
+        <div class="letter">To. 경호 💗</div>
+        <div class="env-body"></div>
+        <div class="flap"></div>
+        <div class="seal">💌</div>
+      </div>
+    </div>
+    <h2>경호에게 편지가 도착했어요</h2>
+    <p class="tap">봉투를 눌러 열어보세요</p>
+  </div>
+</section>
+
+<section class="screen" id="invite">
+  <div class="glass">
+    <div class="badge">📍 베이징 · 2026.07.15</div>
+    <div style="font-size:74px;margin-top:14px">🐰💗🐻</div>
+    <h1>경호야,<br>나랑 데이트할래?</h1>
+    <p class="lead">같이 걷고, 맛있는 것도 먹고,<br>예쁜 추억을 만들고 싶어.</p>
+    <div class="btns">
+      <button class="btn primary" onclick="accept()">수락 💕</button>
+      <button class="btn muted" id="reject" onclick="reject()">거절 🙈</button>
+    </div>
+    <div class="note" id="rejectNote"></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>데이트 신청 성공률</span><span id="pct">20%</span></div>
+      <div class="track"><div class="bar" id="bar" style="width:20%"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="activity">
+  <div class="glass">
+    <div class="step">STEP 1</div><h2>어디에서 데이트할까?</h2>
+    <p class="lead">경호가 제일 끌리는 코스를 골라줘 ✨</p>
+    <div class="grid" id="activityGrid"></div>
+    <button class="btn primary next" onclick="toMeal('lunch')">다음 →</button>
+    <div class="note" id="activityNote"></div>
+  </div>
+</section>
+
+<section class="screen" id="lunch">
+  <div class="glass">
+    <div class="step">STEP 2</div><h2>점심은 뭘 먹을까?</h2>
+    <p class="lead">종류를 고른 다음 메뉴를 하나 선택해줘.</p>
+    <div class="tabs" id="lunchTabs"></div><div class="menu-grid" id="lunchMenus"></div>
+    <button class="btn primary next" onclick="toMeal('dinner')">다음 →</button>
+    <div class="note" id="lunchNote"></div>
+  </div>
+</section>
+
+<section class="screen" id="dinner">
+  <div class="glass">
+    <div class="step">STEP 3</div><h2>저녁은 뭘 먹을까?</h2>
+    <p class="lead">하루의 마지막까지 맛있게 마무리하자 🌙</p>
+    <div class="tabs" id="dinnerTabs"></div><div class="menu-grid" id="dinnerMenus"></div>
+    <button class="btn primary next" onclick="toDessert()">다음 →</button>
+    <div class="note" id="dinnerNote"></div>
+  </div>
+</section>
+
+<section class="screen" id="dessert">
+  <div class="glass">
+    <div class="step">STEP 4</div><h2>후식도 빼놓을 수 없지</h2>
+    <p class="lead">마지막으로 같이 먹고 싶은 걸 골라줘.</p>
+    <div class="grid" id="dessertGrid"></div>
+    <button class="btn primary next" onclick="finish()">티켓 만들기 💖</button>
+    <div class="note" id="dessertNote"></div>
+  </div>
+</section>
+
+<section class="screen" id="result">
+  <div class="glass">
+    <div class="celebrate">🎉💗🎉</div>
+    <h2>데이트 성사!</h2>
+    <p class="lead">경호의 선택으로 완성된 데이트 티켓이에요.</p>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>데이트 신청 성공률</span><span>100%</span></div>
+      <div class="track"><div class="bar" id="finalBar"></div></div>
+    </div>
+    <div class="ticket" id="ticket"></div>
+    <div class="btns">
+      <button class="btn primary" onclick="copyPlan()">계획 복사하기 📋</button>
+      <button class="btn muted" onclick="location.reload()">다시 고르기 ↻</button>
+    </div>
+    <p class="soft">💌 거절권은 사랑에 의해 자동 소멸되었습니다.</p>
+  </div>
+</section>
+</main>
+
+<script>
+const state={activity:"",lunchCat:"",lunchMenu:"",dinnerCat:"",dinnerMenu:"",dessert:""};
+const activities=[
+["🏛️","박물관","전시 보면서 천천히 이야기하기"],
+["🎨","미술관","예쁜 작품 앞에서 사진 남기기"],
+["🚶","City Walk","베이징 골목을 같이 걷기"],
+["🏯","고궁","붉은 성벽 사이를 함께 걷기"],
+["🇨🇳","천안문","베이징의 상징적인 풍경 보기"],
+["🛍️","백화점","쇼핑하고 카페도 들르기"]
+];
+const menuData={
+"일식":["초밥·사시미 🍣","라멘 🍜","돈카츠 정식 🥢","스키야키 🥘","우동·소바 🍥","야키니쿠 🥩"],
+"중식":["베이징 카오야 🦆","훠궈 🌶️","딤섬 🥟","마라샹궈 🍲","북경 가정식 🥢","신장 양꼬치 🍢"],
+"한식":["삼겹살 🥓","닭갈비 🍗","부대찌개 🍲","한식 고기구이 🥩","냉면·갈비 세트 🍜","떡볶이·분식 🌶️"],
+"양식":["파스타 🍝","스테이크 🥩","피자 🍕","브런치 플레이트 🥞","버거·감자튀김 🍔","리조또 🧀"]
+};
+const desserts=[["☕","카페","따뜻한 음료와 수다"],["🍰","케이크","달콤한 디저트 한 조각"],["🧋","버블티","걸으면서 시원하게"],["🍦","아이스크림","하나씩 들고 산책하기"]];
+
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}
+function openEnvelope(){
+ const e=document.getElementById("envelope"); if(e.classList.contains("open"))return;
+ e.classList.add("open"); setTimeout(()=>show("invite"),1350)
+}
+let rejects=0,scale=1;
+function reject(){
+ rejects++; scale*=.68;
+ const b=document.getElementById("reject");
+ b.style.transform=`translate(${(Math.random()-.5)*110}px,${(Math.random()-.5)*45}px) rotate(${(Math.random()-.5)*40}deg) scale(${scale})`;
+ const notes=["에이… 다시 생각해봐 🥺","거절 버튼이 도망가고 있어ㅋㅋ","이제 거의 못 누르겠는데? 👀","사실 정답은 수락이야 💗","거절권이 만료되었습니다 😂"];
+ document.getElementById("rejectNote").textContent=notes[Math.min(rejects-1,4)];
+ const p=Math.min(20+rejects*16,95);document.getElementById("pct").textContent=p+"%";document.getElementById("bar").style.width=p+"%";
+ if(scale<.16){b.style.opacity=0;b.style.pointerEvents="none"}
+}
+function accept(){document.getElementById("pct").textContent="100%";document.getElementById("bar").style.width="100%";burst();setTimeout(()=>show("activity"),650)}
+function renderActivities(){
+ document.getElementById("activityGrid").innerHTML=activities.map(x=>`<div class="choice" onclick="selectOne(this,'activity','${x[1]}','activityGrid')"><span class="ico">${x[0]}</span><div><strong>${x[1]}</strong><small>${x[2]}</small></div></div>`).join("")
+}
+function selectOne(el,key,val,group){
+ document.querySelectorAll("#"+group+" .choice").forEach(x=>x.classList.remove("selected"));el.classList.add("selected");state[key]=val
+}
+function renderMeal(type){
+ const tabs=document.getElementById(type+"Tabs"),cats=Object.keys(menuData);
+ tabs.innerHTML=cats.map((c,i)=>`<button class="tab ${i===0?"active":""}" onclick="selectCat('${type}','${c}',this)">${c}</button>`).join("");
+ selectCat(type,cats[0],tabs.querySelector(".tab"))
+}
+function selectCat(type,cat,btn){
+ document.querySelectorAll("#"+type+"Tabs .tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");
+ state[type+"Cat"]=cat;state[type+"Menu"]="";
+ document.getElementById(type+"Menus").innerHTML=menuData[cat].map(m=>`<div class="menu" onclick="selectMenu('${type}',this,'${m}')">${m}</div>`).join("")
+}
+function selectMenu(type,el,m){
+ document.querySelectorAll("#"+type+"Menus .menu").forEach(x=>x.classList.remove("selected"));el.classList.add("selected");state[type+"Menu"]=m
+}
+function toMeal(type){
+ if(type==="lunch"){
+  if(!state.activity){document.getElementById("activityNote").textContent="데이트 코스를 하나 골라줘 💕";return}
+ }else{
+  if(!state.lunchMenu){document.getElementById("lunchNote").textContent="점심 메뉴를 하나 골라줘 🍴";return}
+ }
+ renderMeal(type);show(type)
+}
+function toDessert(){
+ if(!state.dinnerMenu){document.getElementById("dinnerNote").textContent="저녁 메뉴를 하나 골라줘 🌙";return}
+ show("dessert")
+}
+function renderDessert(){
+ document.getElementById("dessertGrid").innerHTML=desserts.map(x=>`<div class="choice" onclick="selectOne(this,'dessert','${x[1]}','dessertGrid')"><span class="ico">${x[0]}</span><div><strong>${x[1]}</strong><small>${x[2]}</small></div></div>`).join("")
+}
+function finish(){
+ if(!state.dessert){document.getElementById("dessertNote").textContent="후식을 하나 골라줘 🍰";return}
+ document.getElementById("ticket").innerHTML=`
+ <div class="ticket-head"><div class="ticket-title">DATE TICKET</div><div class="ticket-name">경호 ❤️</div></div>
+ <div class="row"><span class="label">DATE</span><span>2026년 7월 15일</span></div>
+ <div class="row"><span class="label">PLACE</span><span>베이징</span></div>
+ <div class="row"><span class="label">DATE</span><span>${state.activity}</span></div>
+ <div class="row"><span class="label">LUNCH</span><span>${state.lunchCat} · ${state.lunchMenu}</span></div>
+ <div class="row"><span class="label">DINNER</span><span>${state.dinnerCat} · ${state.dinnerMenu}</span></div>
+ <div class="row"><span class="label">DESSERT</span><span>${state.dessert}</span></div>
+ <div style="text-align:center;margin-top:16px;font-weight:900;color:#d65380">우리 약속이다? 💗</div>`;
+ show("result");setTimeout(()=>document.getElementById("finalBar").style.width="100%",250);burst()
+}
+async function copyPlan(){
+ const t=`💗 경호와의 베이징 데이트\n📅 2026년 7월 15일\n📍 베이징\n🗺️ ${state.activity}\n☀️ 점심: ${state.lunchCat} - ${state.lunchMenu}\n🌙 저녁: ${state.dinnerCat} - ${state.dinnerMenu}\n🍰 후식: ${state.dessert}`;
+ try{await navigator.clipboard.writeText(t);toast("데이트 계획을 복사했어요 💌")}catch(e){toast("화면을 캡처해서 저장해 주세요 💕")}
+}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+function petals(){
+ const box=document.getElementById("bg"),syms=["🌸","💗","✨","💕","🌷"];
+ for(let i=0;i<24;i++){const s=document.createElement("span");s.className="petal";s.textContent=syms[Math.floor(Math.random()*syms.length)];s.style.left=Math.random()*100+"%";s.style.fontSize=(14+Math.random()*18)+"px";s.style.animationDuration=(7+Math.random()*8)+"s";s.style.animationDelay=(-Math.random()*12)+"s";s.style.setProperty("--drift",((Math.random()-.5)*160)+"px");box.appendChild(s)}
+}
+function burst(){
+ for(let i=0;i<18;i++){const x=document.createElement("span");x.textContent=["💗","✨","💕"][i%3];x.style.cssText=`position:fixed;z-index:30;left:50%;top:50%;font-size:${18+Math.random()*18}px;pointer-events:none;transition:all 1s ease-out`;document.body.appendChild(x);requestAnimationFrame(()=>{x.style.transform=`translate(${(Math.random()-.5)*600}px,${(Math.random()-.5)*500}px) rotate(${Math.random()*360}deg)`;x.style.opacity=0});setTimeout(()=>x.remove(),1100)}
+}
+/* Simple Web Audio chime loop, no external file needed */
+let audioCtx=null,playing=false,timer=null;
+function note(freq,dur,when){
+ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.value=freq;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.045,when+.02);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g).connect(audioCtx.destination);o.start(when);o.stop(when+dur+.05)
+}
+function melody(){
+ if(!playing)return;const now=audioCtx.currentTime;[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46].forEach((f,i)=>note(f,.32,now+i*.38));timer=setTimeout(melody,3400)
+}
+document.getElementById("musicBtn").onclick=async function(){
+ if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+ if(audioCtx.state==="suspended")await audioCtx.resume();
+ playing=!playing;this.textContent=playing?"🎵":"🔇";if(playing)melody();else clearTimeout(timer)
+};
+renderActivities();renderDessert();petals();
+</script>
+</body>
+</html>
